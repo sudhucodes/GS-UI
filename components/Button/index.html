@@ -1,0 +1,26 @@
+<div class="container">
+    <!-- Main Image -->
+    <div class="main-image">
+        <img id="main-image" src="components/Button/images/img1.png" class="image" alt="Main Image">
+    </div>
+
+    <!-- Thumbnail Images -->
+    <div class="thumbnail-images">
+        <img src="components/Button/images/img1.png" class="thumbnail" alt="Thumb 1" data-img="components/Button/images/img1.png">
+        <img src="components/Button/images/img2.png" class="thumbnail" alt="Thumb 2" data-img="components/Button/images/img2.png">
+        <img src="components/Button/images/img3.png" class="thumbnail" alt="Thumb 3" data-img="components/Button/images/img3.png">
+        <img src="components/Button/images/img4.png" class="thumbnail" alt="Thumb 4" data-img="components/Button/images/img4.png">
+    </div>
+</div>
+
+<script>
+    const mainImage = document.getElementById('main-image');
+    const thumbnails = document.querySelectorAll('[data-img]');
+
+    thumbnails.forEach(thumb => {
+        thumb.addEventListener('click', () => {
+            const newSrc = thumb.getAttribute('data-img');
+            mainImage.src = newSrc;
+        });
+    });
+</script>
