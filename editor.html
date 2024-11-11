@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Editor</title>
+    <link rel="stylesheet" href="editor-styles.css">
+</head>
+<body>
+    <h1>Component Editor</h1>
+    <button onclick="goBack()">Back to Gallery</button>
+    
+    <div class="editor-container">
+        <!-- Left Side: Live Preview -->
+        <div class="preview">
+            <h2>Live Preview</h2>
+            <iframe id="preview-frame"></iframe>
+        </div>
+
+        <!-- Right Side: Code Editor with Tabs -->
+        <div class="code-editor">
+            <div class="tabs">
+                <button class="tab" id="html-tab" onclick="showEditor('html')">HTML</button>
+                <button class="tab" id="css-tab" onclick="showEditor('css')">CSS</button>
+            </div>
+            <div class="editor" id="html-editor-container">
+                <textarea id="html-editor"></textarea>
+            </div>
+            <div class="editor" id="css-editor-container">
+                <textarea id="css-editor"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab elements
+const htmlTab = document.getElementById('html-tab');
+const cssTab = document.getElementById('css-tab');
+
+// Editor containers
+const htmlEditorContainer = document.getElementById('html-editor-container');
+const cssEditorContainer = document.getElementById('css-editor-container');
+
+// Function to switch editors
+function showEditor(type) {
+    if (type === 'html') {
+        htmlEditorContainer.classList.add('active');
+        cssEditorContainer.classList.remove('active');
+        htmlTab.classList.add('active');
+        cssTab.classList.remove('active');
+    } else if (type === 'css') {
+        cssEditorContainer.classList.add('active');
+        htmlEditorContainer.classList.remove('active');
+        cssTab.classList.add('active');
+        htmlTab.classList.remove('active');
+    }
+}
+        const urlParams = new URLSearchParams(window.location.search);
+const componentName = urlParams.get('component');
+
+const htmlEditor = document.getElementById('html-editor');
+const cssEditor = document.getElementById('css-editor');
+const previewFrame = document.getElementById('preview-frame');
+
+// Function to load HTML and CSS from the selected component
+async function loadComponent() {
+    if (!componentName) return;
+
+    // Fetch HTML
+    const htmlResponse = await fetch(`components/${componentName}/index.html`);
+    const htmlCode = await htmlResponse.text();
+    htmlEditor.value = htmlCode;
+
+    // Fetch CSS
+    const cssResponse = await fetch(`components/${componentName}/style.css`);
+    const cssCode = await cssResponse.text();
+    cssEditor.value = cssCode;
+
+    updatePreview();
+}
+
+// Function to update the live preview
+function updatePreview() {
+    const htmlCode = htmlEditor.value;
+    const cssCode = `<style>${cssEditor.value}</style>`;
+
+    const frameDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+    frameDoc.open();
+    frameDoc.write(cssCode + htmlCode);
+    frameDoc.close();
+
+    // Adjust iframe height to fit content and avoid scroll
+    previewFrame.style.height = frameDoc.body.scrollHeight + 'px';
+}
+
+
+// Function to go back to main gallery
+function goBack() {
+    window.location.href = 'index.html';
+}
+
+// Initialize the editor with component content and set up live editing
+loadComponent();
+htmlEditor.addEventListener('input', updatePreview);
+cssEditor.addEventListener('input', updatePreview);
+showEditor('html');
+    </script>
+</body>
+</html>

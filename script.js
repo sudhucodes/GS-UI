@@ -1,32 +1,29 @@
-const htmlEditor = document.getElementById('html-editor');
-const cssEditor = document.getElementById('css-editor');
-const previewFrame = document.getElementById('preview-frame');
+// Function to load HTML and CSS into iframes on the main page
+async function loadComponentPreview() {
+    const iframes = document.querySelectorAll('iframe');
 
-// Load the initial HTML and CSS for the Button component
-async function loadComponent() {
-    // Fetching HTML code from component
-    const htmlResponse = await fetch('components/Button/index.html');
-    const htmlCode = await htmlResponse.text();
-    htmlEditor.value = htmlCode;
+    iframes.forEach(async (iframe) => {
+        const componentName = iframe.dataset.component;
+        const htmlResponse = await fetch(`components/${componentName}/index.html`);
+        const htmlCode = await htmlResponse.text();
 
-    // Fetching CSS code from component
-    const cssResponse = await fetch('components/Button/style.css');
-    const cssCode = await cssResponse.text();
-    cssEditor.value = cssCode;
+        const cssResponse = await fetch(`components/${componentName}/style.css`);
+        const cssCode = await cssResponse.text();
 
-    updatePreview();
+        const fullContent = `<style>${cssCode}</style>${htmlCode}`;
+
+        // Write the combined HTML and CSS into the iframe's document
+        const frameDoc = iframe.contentDocument || iframe.contentWindow.document;
+        frameDoc.open();
+        frameDoc.write(fullContent);
+        frameDoc.close();
+    });
 }
 
-function updatePreview() {
-    const htmlCode = htmlEditor.value;
-    const cssCode = `<style>${cssEditor.value}</style>`;
-
-    const frameDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-    frameDoc.open();
-    frameDoc.write(cssCode + htmlCode);
-    frameDoc.close();
+// Function to navigate to the editor page with the selected component
+function openComponent(componentName) {
+    window.location.href = `editor.html?component=${componentName}`;
 }
 
-loadComponent();
-htmlEditor.addEventListener('input', updatePreview);
-cssEditor.addEventListener('input', updatePreview);
+// Load previews when the page is ready
+document.addEventListener('DOMContentLoaded', loadComponentPreview);

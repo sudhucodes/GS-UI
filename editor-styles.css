@@ -1,0 +1,101 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 8px 16px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+/* Container for Preview and Editor */
+.editor-container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Preview Area */
+.preview {
+    flex: 1;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.preview h2 {
+    margin-bottom: 10px;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    flex: 1;
+}
+
+/* Code Editor Area */
+.code-editor {
+    flex-basis: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f4f4f4;
+    border: none;
+    outline: none;
+    font-weight: bold;
+}
+
+.tab:hover {
+    background-color: #e4e4e4;
+}
+
+.tab.active {
+    background-color: #fff;
+    border-bottom: 2px solid #4CAF50;
+}
+
+.editor {
+    display: none;
+    padding: 10px;
+    height: 100%;
+}
+
+#html-editor-container.active, #css-editor-container.active {
+    display: block;
+}
+
+textarea {
+    width: 100%;
+    height: 300px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-family: monospace;
+    font-size: 14px;
+    resize: none;
+    flex: 1;
+}
